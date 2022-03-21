@@ -7,20 +7,22 @@ export const traerClientes = async (req, res) => {
     const pool = await establecerConexion(); 
     
     //Realiza la consulta a la BBDD
-    const result = await pool.request().query(`SELECT ENT_ID, ENT_RazonSocial, ENT_CUIT FROM N_ENTIDADES WHERE ENT_RazonSocial LIKE '%EDUARDO%'`)
+    const result = await pool.request().query(`SELECT ENT_ID, ENT_RazonSocial, ENT_CUIT FROM N_ENTIDADES`)
 
     res.json(result.recordset)
 
 }
 
-export const traerClientePorID = async (req, res, codigoInterno) => {
+export const traerClientePorID = async (req, res) => {
     
     //Llama la conexión con la BBDD
     const pool = await establecerConexion(); 
+
+    const dato = req.query.codigoInterno
     
     //Realiza la consulta a la BBDD
     const result = await pool.request()
-        .query(`SELECT ENT_ID, ENT_NombreFantasia, ENT_RazonSocial, ENT_CUIT FROM N_ENTIDADES WHERE  ENT_ID LIKE %${codigoInterno}%`)
+        .query(`SELECT ENT_ID, ENT_NombreFantasia, ENT_RazonSocial, ENT_CUIT FROM N_ENTIDADES WHERE  ENT_ID LIKE '%${dato}%'`)
 
     res.json(result.recordset)
 
@@ -42,14 +44,15 @@ export async function traerClientePorRS(req, res) {
 
 }
 
-export const traerClientePorCUIT = async (req, res, cuit) => {
+export async function traerClientePorCUIT(req, res) {
     
     //Llama la conexión con la BBDD
     const pool = await establecerConexion(); 
+
+    const dato = req.query.cuit
     
     //Realiza la consulta a la BBDD
-    const result = await pool.request()
-        .query(`SELECT ENT_ID, ENT_NombreFantasia, ENT_RazonSocial, ENT_CUIT FROM N_ENTIDADES WHERE ENT_CUIT %${cuit}% `)
+    const result = await pool.request().query(`SELECT ENT_ID, ENT_NombreFantasia, ENT_RazonSocial, ENT_CUIT FROM N_ENTIDADES WHERE ENT_CUIT LIKE '%${dato}%' `)
 
     res.json(result.recordset)
 
